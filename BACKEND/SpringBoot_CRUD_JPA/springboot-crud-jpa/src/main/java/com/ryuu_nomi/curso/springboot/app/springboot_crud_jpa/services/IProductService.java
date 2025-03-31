@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import com.ryuu_nomi.curso.springboot.app.springboot_crud_jpa.entities.Product;
 
-public interface ProductService {
+public interface IProductService {
 
     List<Product> findAll();
 
@@ -13,5 +13,7 @@ public interface ProductService {
 
     Product save(Product product);
 
-    Optional<Product> delete(Product product);
+    Optional<Product> update(Long id, Product product);
+
+    Optional<Product> delete(Long id);
 }

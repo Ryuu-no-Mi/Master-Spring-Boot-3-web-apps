@@ -11,7 +11,7 @@ import com.ryuu_nomi.curso.springboot.app.springboot_crud_jpa.entities.Product;
 import com.ryuu_nomi.curso.springboot.app.springboot_crud_jpa.repositories.ProductRepository;
 
 @Service
-public class ProductServiceImpl implements ProductService {
+public class ProductServiceImpl implements IProductService {
 
     @Autowired
     private ProductRepository repository;
@@ -34,11 +34,28 @@ public class ProductServiceImpl implements ProductService {
     public Product save(Product product) {
         return repository.save(product);
     }
+    
+    @Override
+    @Transactional
+    public Optional<Product> update(Long id, Product product) {
+        Optional<Product> productOptional = repository.findById(id);
+        if (productOptional.isPresent()) {
+            Product productDB = productOptional.orElseThrow();
+            
+            productDB.setName(product.getName());
+            productDB.setDescription(product.getDescription());
+            productDB.setPrice(product.getPrice());
+
+            return Optional.of(repository.save(productDB));
+        }
+
+        return productOptional;
+    }
 
     @Override
     @Transactional
-    public Optional<Product> delete(Product product) {
-        Optional<Product> productOptional = repository.findById(product.getId());
+    public Optional<Product> delete(Long id) {
+        Optional<Product> productOptional = repository.findById(id);
         productOptional.ifPresent(productDB -> {
             repository.delete(productDB);
         });
@@ -46,5 +63,6 @@ public class ProductServiceImpl implements ProductService {
         // solo para mostrar al usuario que ha sido borrado
         return productOptional;
     }
+
 
 }

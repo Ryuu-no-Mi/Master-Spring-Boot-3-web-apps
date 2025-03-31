@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ryuu_nomi.curso.springboot.app.springboot_crud_jpa.entities.Product;
-import com.ryuu_nomi.curso.springboot.app.springboot_crud_jpa.services.ProductService;
+import com.ryuu_nomi.curso.springboot.app.springboot_crud_jpa.services.IProductService;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 public class ProductController {
 
     @Autowired
-    private ProductService service;
+    private IProductService service;
 
     @GetMapping
     public List<Product> list() {
@@ -52,16 +52,22 @@ public class ProductController {
     // modificacion
     @PutMapping("/{id}")
     public ResponseEntity<Product> update(@PathVariable Long id, @RequestBody Product product) {
-        product.setId(id);
         // Product productDB = service.findById(id);
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(product));
+        //return ResponseEntity.status(HttpStatus.CREATED).body(service.update(id,product).get());
+
+        //Manejando el optionalreturn
+        Optional<Product> productOPtional = service.update(id, product);
+        if (productOPtional.isPresent()) {
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(productOPtional.orElseThrow());
+        }
+        
+        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        Product product = new Product();
-        product.setId(id);
-        Optional<Product> productOptional = service.delete(product);
+        Optional<Product> productOptional = service.delete(id);
         if (productOptional.isPresent()) {
             return ResponseEntity.ok(productOptional.orElseThrow());
         }
