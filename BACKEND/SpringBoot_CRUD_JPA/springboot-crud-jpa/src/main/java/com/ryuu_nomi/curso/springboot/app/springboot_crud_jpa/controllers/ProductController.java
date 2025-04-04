@@ -1,15 +1,21 @@
 package com.ryuu_nomi.curso.springboot.app.springboot_crud_jpa.controllers;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ryuu_nomi.curso.springboot.app.springboot_crud_jpa.entities.Product;
 import com.ryuu_nomi.curso.springboot.app.springboot_crud_jpa.services.IProductService;
+
+import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,19 +48,29 @@ public class ProductController {
     }
 
     // Agregar
+    // el @ valid debe ir en el request body <Product>
     @PostMapping
-    public ResponseEntity<Product> create(@RequestBody Product product) {
+    public ResponseEntity<?> create(@Valid @RequestBody Product product, BindingResult result) {
         // Product productNew = service.save(product);
         // return ResponseEntity.status(HttpStatus.CREATED).body(productNew);
+        if(result.hasFieldErrors()){
+            return validation(result);
+        }
         return ResponseEntity.status(HttpStatus.CREATED).body(service.save(product));
     }
 
     // modificacion
+    // el @ valid debe ir en el request body <Product>
+    //El BindingResult debe esta al lado del objeto a validar
     @PutMapping("/{id}")
-    public ResponseEntity<Product> update(@PathVariable Long id, @RequestBody Product product) {
+    public ResponseEntity<?> update(@Valid @RequestBody Product product, BindingResult result, @PathVariable Long id) {
         // Product productDB = service.findById(id);
         //return ResponseEntity.status(HttpStatus.CREATED).body(service.update(id,product).get());
 
+        if (result.hasFieldErrors()) {
+            return validation(result);
+        }
+        
         //Manejando el optionalreturn
         Optional<Product> productOPtional = service.update(id, product);
         if (productOPtional.isPresent()) {
@@ -74,4 +90,15 @@ public class ProductController {
         return ResponseEntity.notFound().build();
     }
 
+    // ? es un tipo generico
+    private ResponseEntity<?> validation(BindingResult result) {
+        Map<String, String> errors = new HashMap<>();
+
+        result.getFieldErrors().forEach(err -> {
+            errors.put(err.getField(), "El campo " + err.getField() + " " + err.getDefaultMessage());
+        });
+
+        //return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+        return ResponseEntity.badRequest().body(errors);
+    }
 }
