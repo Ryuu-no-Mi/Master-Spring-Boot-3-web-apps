@@ -36,15 +36,14 @@ public class UserServiceImpl implements IUserService {
     @Transactional
     public User save(User user) {
 
-        Optional<Role> optionalRoleUser = roleRepository.findByName("USER");
+        Optional<Role> optionalRoleUser = roleRepository.findByName("ROLE_USER");
         List<Role> roles = new ArrayList<>();
 
         //optionalRoleUser.ifPresent(role->roles.add(role));
         optionalRoleUser.ifPresent(roles::add);
 
         if (user.isAdmin()) {
-
-            Optional<Role> optionalRoleAdmin = roleRepository.findByName("ADMIN");
+            Optional<Role> optionalRoleAdmin = roleRepository.findByName("ROLE_ADMIN");
             optionalRoleAdmin.ifPresent(roles::add);
         }
 
@@ -54,6 +53,4 @@ public class UserServiceImpl implements IUserService {
         return userRepository.save(user);
     }
     
-
-
 }

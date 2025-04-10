@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController {
 
     @Autowired
@@ -35,17 +35,13 @@ public class UserController {
         return service.findAll();
     };
 
-    @PostMapping("/{id}")
+    @PostMapping
     public ResponseEntity<?> create(@RequestBody User user, BindingResult result) {
         if (result.hasFieldErrors()) {
             return validation(result);
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(service.save(user));
     }
-
-
-
-
 
     //podriamos reutilizar validation creando uan clase helper
     private ResponseEntity<?> validation(BindingResult result) {

@@ -23,6 +23,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
 
     @Column(unique = true)
@@ -55,6 +56,15 @@ public class User {
         this.username = username;
         this.password = password;
         this.roles = roles;
+    }
+
+    public User(Long id, @NotBlank @Size(min = 4, max = 20) String username,
+            @NotBlank @Size(min = 8, max = 80) String password, List<Role> roles, boolean admin) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.roles = roles;
+        this.admin = admin;
     }
 
     public Long getId() {
@@ -97,5 +107,4 @@ public class User {
         this.admin = admin;
     }
 
-    
 }
