@@ -1,11 +1,10 @@
 package com.ryuu_nomi.curso.springboot.app.springboot_crud_jpa.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import jakarta.annotation.Generated;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,7 +31,7 @@ public class User {
 
     @Column(unique = true)
     @NotBlank
-    @Size(min=4, max=20)
+    @Size(min=4, max=50)
     private String username;
 
     @NotBlank
@@ -50,7 +49,12 @@ public class User {
     )
     private List<Role> roles;
 
+    // Como no esta mapeado en la bdd hay que ecirselo a hibernate y jpa
+    // Campo qu eno necesita persitencia
+    @Transient
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private boolean admin;
+
     private boolean enabled;
 
     @PrePersist
@@ -58,12 +62,8 @@ public class User {
         enabled = true;
     }
 
-    //Como no esta mapeado en la bdd hay que ecirselo a hibernate y jpa
-    //Campo qu eno necesita persitencia
-    @Transient
-    private boolean admin;
-
     public User() {
+        roles = new ArrayList<>();
     }
 
     public User(Long id, String username, String password, List<Role> roles) {

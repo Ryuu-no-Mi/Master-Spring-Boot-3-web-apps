@@ -4,11 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.text.html.parser.Entity;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ryuu_nomi.curso.springboot.app.springboot_crud_jpa.entities.User;
 import com.ryuu_nomi.curso.springboot.app.springboot_crud_jpa.services.IUserService;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -41,6 +37,17 @@ public class UserController {
             return validation(result);
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(service.save(user));
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody User user, BindingResult result) {   
+        // if (result.hasFieldErrors()) {
+        //     return validation(result);
+        // }
+        // user.setAdmin(false);
+        // return ResponseEntity.status(HttpStatus.CREATED).body(service.save(user));
+        user.setAdmin(false);
+        return create(user, result);
     }
 
     //podriamos reutilizar validation creando uan clase helper
