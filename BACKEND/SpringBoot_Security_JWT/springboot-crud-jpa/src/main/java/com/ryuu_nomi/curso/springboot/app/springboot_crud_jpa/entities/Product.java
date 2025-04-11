@@ -2,6 +2,10 @@ package com.ryuu_nomi.curso.springboot.app.springboot_crud_jpa.entities;
 
 import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
+
+import com.ryuu_nomi.curso.springboot.app.springboot_crud_jpa.validation.IsExistsDb;
+import com.ryuu_nomi.curso.springboot.app.springboot_crud_jpa.validation.IsRequired;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,9 +25,14 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @IsRequired
+    @IsExistsDb
+    private String sku;
+
     //Solo para los string, validamos que no sea vacio
     // Validamos el tamaño del string 
-    @NotBlank(message = "{NotBlank.product.name}")
+    //@NotBlank(message = "{NotBlank.product.name}")
+    @IsRequired(message = "{IsRequired.product.name}")
     @Size(min = 3, max = 20, message = "{Size.product.name}")
     private String name;
 
@@ -32,7 +41,7 @@ public class Product {
     @NotNull(message = "{NotNull.product.price}")
     private Integer price;
 
-    @NotBlank
+    @IsRequired
     private String description;
 
     @CreationTimestamp
@@ -88,6 +97,14 @@ public class Product {
 
     public void setDate(LocalDateTime date) {
         this.date = date;
+    }
+
+    public String getSku() {
+        return sku;
+    }
+
+    public void setSku(String sku) {
+        this.sku = sku;
     }
 
 }

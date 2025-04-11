@@ -63,4 +63,10 @@ public class ProductServiceImpl implements IProductService {
         // solo para mostrar al usuario que ha sido borrado
         return productOptional;
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean existsBySku(String sku) {
+        return repository.existsBySku(sku);
+    }
 }
