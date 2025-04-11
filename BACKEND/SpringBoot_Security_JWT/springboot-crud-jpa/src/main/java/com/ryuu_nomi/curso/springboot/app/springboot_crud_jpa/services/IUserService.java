@@ -1,6 +1,7 @@
 package com.ryuu_nomi.curso.springboot.app.springboot_crud_jpa.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.ryuu_nomi.curso.springboot.app.springboot_crud_jpa.entities.User;
 
@@ -12,4 +13,6 @@ public interface IUserService {
     List<User> findAll();
 
     User save(User user);
+
+    Optional<User> delete(Long id);
 }

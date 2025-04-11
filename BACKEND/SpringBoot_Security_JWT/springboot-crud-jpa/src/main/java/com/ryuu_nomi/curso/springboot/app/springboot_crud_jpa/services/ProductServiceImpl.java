@@ -63,6 +63,4 @@ public class ProductServiceImpl implements IProductService {
         // solo para mostrar al usuario que ha sido borrado
         return productOptional;
     }
-
-
 }

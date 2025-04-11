@@ -52,5 +52,20 @@ public class UserServiceImpl implements IUserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
+
+    @Override
+    @Transactional
+    public Optional<User> delete(Long id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        userOptional.ifPresent(userBD -> {
+            userRepository.delete(userBD);
+        });
+
+        // solo para mostrar al usuario que ha sido borrado
+        return userOptional;
+    }
+
+
+    
     
 }
