@@ -18,7 +18,7 @@ import com.ryuu_nomi.curso.springboot.app.springboot_crud_jpa.repositories.UserR
 public class UserServiceImpl implements IUserService {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserRepository repository;
 
     @Autowired
     private RoleRepository roleRepository;
@@ -29,7 +29,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     @Transactional(readOnly = true)
     public List<User> findAll() {
-        return (List <User>) userRepository.findAll();
+        return (List <User>) repository.findAll();
     }
 
     @Override
@@ -50,22 +50,12 @@ public class UserServiceImpl implements IUserService {
         user.setRoles(roles);
         //String passwordEncoded = passwordEncoder.encode(user.getPassword());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+        return repository.save(user);
     }
 
     @Override
-    @Transactional
-    public Optional<User> delete(Long id) {
-        Optional<User> userOptional = userRepository.findById(id);
-        userOptional.ifPresent(userBD -> {
-            userRepository.delete(userBD);
-        });
-
-        // solo para mostrar al usuario que ha sido borrado
-        return userOptional;
+    public boolean existsByUsername(String username) {
+        return repository.existsByUsername(username);
     }
 
-
-    
-    
 }

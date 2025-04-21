@@ -3,7 +3,10 @@ package com.ryuu_nomi.curso.springboot.app.springboot_crud_jpa.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ryuu_nomi.curso.springboot.app.springboot_crud_jpa.validation.ExistsByUsernamee;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -29,23 +32,25 @@ public class User {
     @Column(name = "user_id")
     private Long id;
 
-    @Column(unique = true)
+    @ExistsByUsernamee
     @NotBlank
     @Size(min=4, max=50)
+    @Column(unique = true)
     private String username;
 
     @NotBlank
     @Size(min = 8, max = 80)
-    //@JsonIgnore
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     //Tambien podriamos hacer una clase userDTO que hace de tabla intermedia entre el usuario y el backend
     private String password;
     
+    @JsonIgnoreProperties({"users", "handler","hibernateLazyInitializer"})
     @ManyToMany
-    @JoinTable(name="users_roles", 
-                joinColumns  = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"),
-            uniqueConstraints = { @UniqueConstraint(columnNames = {"user_id", "role_id"}) }
+    @JoinTable(
+        name="users_roles", 
+        joinColumns  = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "role_id"),
+        uniqueConstraints = { @UniqueConstraint(columnNames = {"user_id", "role_id"}) }
     )
     private List<Role> roles;
 
@@ -64,22 +69,6 @@ public class User {
 
     public User() {
         roles = new ArrayList<>();
-    }
-
-    public User(Long id, String username, String password, List<Role> roles) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.roles = roles;
-    }
-
-    public User(Long id, @NotBlank @Size(min = 4, max = 20) String username,
-            @NotBlank @Size(min = 8, max = 80) String password, List<Role> roles, boolean admin) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.roles = roles;
-        this.admin = admin;
     }
 
     public Long getId() {
@@ -128,6 +117,37 @@ public class User {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((username == null) ? 0 : username.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        User other = (User) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        if (username == null) {
+            if (other.username != null)
+                return false;
+        } else if (!username.equals(other.username))
+            return false;
+        return true;
     }
 
 }
