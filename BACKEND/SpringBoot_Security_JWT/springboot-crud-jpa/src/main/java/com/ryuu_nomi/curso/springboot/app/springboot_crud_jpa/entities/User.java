@@ -3,7 +3,6 @@ package com.ryuu_nomi.curso.springboot.app.springboot_crud_jpa.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ryuu_nomi.curso.springboot.app.springboot_crud_jpa.validation.ExistsByUsernamee;

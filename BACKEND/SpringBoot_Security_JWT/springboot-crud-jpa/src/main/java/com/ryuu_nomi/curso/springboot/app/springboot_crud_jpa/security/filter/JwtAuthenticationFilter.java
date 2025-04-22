@@ -76,7 +76,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         //Claims claims = Jwts.claims().build();
         //claims.put("authorities", roles);
 
-        Claims claims = Jwts.claims().add("authorities", roles).build();
+        Claims claims = Jwts.claims()
+                .add("authorities", roles)
+                .add("username", username)
+                .build();
 
         //Map<String, Object> claims = new HashMap<>();
         //claims.put("authorities", roles);
