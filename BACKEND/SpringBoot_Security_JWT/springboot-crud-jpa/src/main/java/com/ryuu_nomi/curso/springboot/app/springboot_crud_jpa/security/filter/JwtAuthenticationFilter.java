@@ -1,13 +1,10 @@
 package com.ryuu_nomi.curso.springboot.app.springboot_crud_jpa.security.filter;
 
 import java.io.IOException;
-import java.security.Key;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.crypto.SecretKey;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -69,16 +66,20 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
             Authentication authResult) throws IOException, ServletException {
-        super.successfulAuthentication(request, response, chain, authResult);
 
-        //ais se genera el token: String jws =
-        User user = (User) authResult.getPrincipal();
-        String username = user.getUsername();
+        //asi se genera el token:
+        org.springframework.security.core.userdetails.User userDetail = (org.springframework.security.core.userdetails.User) authResult.getPrincipal();
+        String username = userDetail.getUsername();
         Collection<? extends GrantedAuthority> roles = authResult.getAuthorities();
         
-        //Claims
-        Claims claims = Jwts.claims().build();
-        claims.put("authorities", roles);
+        //Claims da error al crear un objeto inmutable
+        //Claims claims = Jwts.claims().build();
+        //claims.put("authorities", roles);
+
+        Claims claims = Jwts.claims().add("authorities", roles).build();
+
+        //Map<String, Object> claims = new HashMap<>();
+        //claims.put("authorities", roles);
 
         String token = Jwts.builder()
                 .subject(username)
@@ -96,9 +97,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         body.put("username", username);
         body.put("message", String.format("Hola %s has iniciado sesion con exito", username));
 
-        response.getWriter().write(new ObjectMapper().writeValueAsString(body));
         response.setContentType(CONTENT_TYPE);
-        response.setStatus(200);
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.getWriter().write(new ObjectMapper().writeValueAsString(body));
 
     }
 
