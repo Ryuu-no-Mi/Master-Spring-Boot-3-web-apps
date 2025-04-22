@@ -2,6 +2,8 @@ package com.ryuu_nomi.curso.springboot.app.springboot_crud_jpa.security.filter;
 
 import java.io.IOException;
 import java.security.Key;
+import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,6 +13,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.fasterxml.jackson.core.exc.StreamReadException;
@@ -18,18 +21,18 @@ import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ryuu_nomi.curso.springboot.app.springboot_crud_jpa.entities.User;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import static com.ryuu_nomi.curso.springboot.app.springboot_crud_jpa.security.TokenJwtConfig.*;
+
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private AuthenticationManager authenticationManager;
-
-    //esta clave siempre se queda en el backend ni nosotros podemos visualizar
-    private static final SecretKey SECRET_KEY = Jwts.SIG.HS256.key().build();
 
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
@@ -71,13 +74,23 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         //ais se genera el token: String jws =
         User user = (User) authResult.getPrincipal();
         String username = user.getUsername();
+        Collection<? extends GrantedAuthority> roles = authResult.getAuthorities();
+        
+        //Claims
+        Claims claims = Jwts.claims().build();
+        claims.put("authorities", roles);
+
         String token = Jwts.builder()
                 .subject(username)
+                .claim(claims)
+                .expiration(new Date(System.currentTimeMillis() + 3600000))
+                .issuedAt(new Date())
                 .signWith(SECRET_KEY)
                 .compact();
 
-        response.addHeader("Authorization", "Bearer " + token);
+        //response.addHeader("Authorization", "Bearer " + token);
 
+        response.addHeader(HEADER_AUTHORIZATION, PREFIX_TOKEN + token);
         Map<String, String> body = new HashMap<>();
         body.put("token", token);
         body.put("username", username);
