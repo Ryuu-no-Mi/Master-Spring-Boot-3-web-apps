@@ -64,9 +64,9 @@ public class ProductServiceImpl implements IProductService {
         return productOptional;
     }
 
-    @Override
-    @Transactional(readOnly = true)
-    public boolean existsBySku(String sku) {
-        return repository.existsBySku(sku);
-    }
+    // @Override
+    // @Transactional(readOnly = true)
+    // public boolean existsBySku(String sku) {
+    //     return repository.existsBySku(sku);
+    // }
 }

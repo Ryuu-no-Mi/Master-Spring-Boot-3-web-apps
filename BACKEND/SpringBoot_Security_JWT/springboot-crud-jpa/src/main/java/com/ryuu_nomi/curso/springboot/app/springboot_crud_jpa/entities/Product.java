@@ -24,9 +24,9 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @IsRequired
-    @IsExistsDb
-    private String sku;
+    //@IsRequired
+    //@IsExistsDb
+    //private String sku;
 
     //Solo para los string, validamos que no sea vacio
     // Validamos el tamaño del string 
@@ -98,12 +98,12 @@ public class Product {
         this.date = date;
     }
 
-    public String getSku() {
-        return sku;
-    }
+    // public String getSku() {
+    //     return sku;
+    // }
 
-    public void setSku(String sku) {
-        this.sku = sku;
-    }
+    // public void setSku(String sku) {
+    //     this.sku = sku;
+    // }
 
 }
