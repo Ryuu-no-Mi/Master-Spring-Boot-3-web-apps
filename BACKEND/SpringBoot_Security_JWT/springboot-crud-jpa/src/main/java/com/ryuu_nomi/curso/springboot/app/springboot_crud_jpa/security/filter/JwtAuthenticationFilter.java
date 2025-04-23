@@ -76,8 +76,27 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         //Claims claims = Jwts.claims().build();
         //claims.put("authorities", roles);
 
+        /*
+         * //Claims claims = Jwts.claims()
+         * // .add("authorities", new ObjectMapper().writeValueAsString(roles))
+         * // .add("username", username)
+         * // .build();
+         * Eso hace que en el token tengas esto:
+         * "authorities": "[{\"authority\":\"ROLE_USER\"}]"
+         * ⚠️ Spring Security no interpreta eso como una lista de roles válidos
+         * automáticamente,
+         * y no bloquea al usuario como debería.
+         */
+
+        /*
+        ✅ SOLUCIÓN
+            Debes guardar los roles como una lista real de strings, no como un string JSON:
+        */
+
         Claims claims = Jwts.claims()
-                .add("authorities", roles)
+                .add("authorities", roles.stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .toList()) // ✔️ ahora es una lista de strings
                 .add("username", username)
                 .build();
 

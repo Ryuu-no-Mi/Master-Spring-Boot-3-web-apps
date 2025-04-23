@@ -8,6 +8,7 @@ import static com.ryuu_nomi.curso.springboot.app.springboot_crud_jpa.security.To
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
@@ -43,6 +44,7 @@ public class JwtValidationFIilter extends BasicAuthenticationFilter {
         String header = request.getHeader(HEADER_AUTHORIZATION);
 
         if (header == null || !header.startsWith(PREFIX_TOKEN)) {
+            chain.doFilter(request, response);
             return;
         }
 
@@ -52,12 +54,19 @@ public class JwtValidationFIilter extends BasicAuthenticationFilter {
             Claims claims = Jwts.parser().verifyWith(SECRET_KEY).build().parseSignedClaims(token).getPayload();
             String username = claims.getSubject();
             //String username3 = (String) claims.get("username"); segudna opc
-            Object authoritiesClaims = claims.get("authorities");
+           // Object authoritiesClaims = claims.get("authorities");
 
-            Collection<? extends GrantedAuthority> authorities = Arrays.asList( 
-                    new ObjectMapper()
-                    .addMixIn(SimpleGrantedAuthority.class, SimpleGrantedAuthorityJsonCreator.class)
-                    .readValue(authoritiesClaims.toString().getBytes(), SimpleGrantedAuthority[].class));
+            // Collection<? extends GrantedAuthority> authorities = Arrays.asList( 
+            //         new ObjectMapper()
+            //         .addMixIn(SimpleGrantedAuthority.class, SimpleGrantedAuthorityJsonCreator.class)
+            //         .readValue(authoritiesClaims.toString().getBytes(), SimpleGrantedAuthority[].class));ç
+
+            @SuppressWarnings("unchecked")
+            List<String> roles = (List<String>) claims.get("authorities");
+
+            Collection<? extends GrantedAuthority> authorities = roles.stream()
+                    .map(SimpleGrantedAuthority::new)
+                    .toList();
 
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,
                     null, authorities);
@@ -76,9 +85,6 @@ public class JwtValidationFIilter extends BasicAuthenticationFilter {
 
         }
 
-
     }
-
-    
 
 }
