@@ -1,1 +1,29 @@
-<p>product works!</p>
+@if (products.length>0) {
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (product of products; track $index) {
+                <tr>
+                    <td>{{ product.id }}</td>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.description }}</td>
+                    <td>{{ product.price }}</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    
+} @else {
+    <div class="alert alert-info" role="alert">
+        <h4 class="alert-heading">No products found</h4>
+        <p>Try to change the filter or add a new product.</p>
+    </div>
+}

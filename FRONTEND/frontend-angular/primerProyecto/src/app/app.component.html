@@ -26,6 +26,7 @@
       <li>{{ course }}</li>
     }
   </ul>
+
 } @else {
   <h2>Lo sentimos no esta disponible!!!</h2>
 }
@@ -33,5 +34,11 @@
 <button type="button" (click)="setEnabled()">
   {{enabled ? 'Ocultar' : 'Mostrar'}}
 </button>
+
+  <!-- Tabla de productos -->
+  <app-product></app-product>
+
+  <!-- Formulario de productos -->
+  <product-form></product-form>
 
 <router-outlet />

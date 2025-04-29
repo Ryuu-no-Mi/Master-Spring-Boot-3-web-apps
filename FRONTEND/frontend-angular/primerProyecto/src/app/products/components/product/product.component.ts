@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../../services/product.service';
 import { Product } from './model/product';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-product',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './product.component.html',
   styleUrl: './product.component.css',
 })
+  
 export class ProductComponent implements OnInit {
   // propiedad para almacenar los productos
   products: Product[] = [];
