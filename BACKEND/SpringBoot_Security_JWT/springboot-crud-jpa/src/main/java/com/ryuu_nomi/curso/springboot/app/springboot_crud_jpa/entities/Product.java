@@ -3,7 +3,6 @@ package com.ryuu_nomi.curso.springboot.app.springboot_crud_jpa.entities;
 import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 
-import com.ryuu_nomi.curso.springboot.app.springboot_crud_jpa.validation.IsExistsDb;
 import com.ryuu_nomi.curso.springboot.app.springboot_crud_jpa.validation.IsRequired;
 
 import jakarta.persistence.Column;

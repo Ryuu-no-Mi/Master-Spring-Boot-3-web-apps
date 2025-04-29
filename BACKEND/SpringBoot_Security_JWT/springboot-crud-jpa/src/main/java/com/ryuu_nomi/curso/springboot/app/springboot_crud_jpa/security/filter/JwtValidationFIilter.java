@@ -20,12 +20,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ryuu_nomi.curso.springboot.app.springboot_crud_jpa.security.SimpleGrantedAuthorityJsonCreator;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.lang.Arrays;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
