@@ -1,17 +1,21 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Product } from '../product/model/product';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'product-form',
-  imports: [FormsModule],
+  imports: [FormsModule,CommonModule],
   templateUrl: './form.component.html',
   styleUrl: './form.component.css',
 })
 export class FormComponent {
   // product: Product = new Product();
   @Input() product: Product = {
-    id: 0, name: '', price: 0, description: ''
+    id: 0,
+    name: '',
+    price: 0,
+    description: '',
   };
 
   @Output() newProductEvent = new EventEmitter();
@@ -20,7 +24,7 @@ export class FormComponent {
     this.newProductEvent.emit(this.product);
     // Reset the form after submission
     this.product = { id: 0, name: '', price: 0, description: '' };
-    
+
     // Handle form submission logic here
     console.log('Form submitted:', this.product);
 
@@ -29,5 +33,16 @@ export class FormComponent {
     // this.productService.saveProduct(this.product).subscribe(response => {
     //   console.log('Product saved:', response);
     throw new Error('Method not implemented.');
+  }
+
+  onReset():void {
+    // this.product = new Product();
+    // Reset the form to its initial state
+    this.product = {
+      id: 0,
+      name: '',
+      price: 0,
+      description: '',
+    };
   }
 }

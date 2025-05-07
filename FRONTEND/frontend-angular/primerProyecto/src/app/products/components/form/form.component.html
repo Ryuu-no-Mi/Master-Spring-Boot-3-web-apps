@@ -1,18 +1,73 @@
-<form (ngSubmit)="onSubmit()">
+<form (ngSubmit)="onSubmit()" #productForm="ngForm" class="container my-4" #form="ngForm" novalidate>
     <div class="form-group">
         <label for="name">Name</label>
-        <input type="text" class="form-control my-2" id="name" name="name" [(ngModel)]="product.name" required>
+        <input 
+        type="text" 
+        class="form-control my-2" 
+        id="name" 
+        name="name" 
+        [(ngModel)]="product.name"
+        #name="ngModel" required>
+    </div>
+    <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
+        @if (name.errors!['required']) {
+            <div>
+                <p>El campo Nombre es requerido!</p>
+            </div>
+        }
     </div>
     
     <div class="form-group">
         <label for="description">Description</label>
-        <textarea class="form-control my-2" id="description" name="description"  [(ngModel)]="product.description" ></textarea>
+        <textarea 
+        class="form-control my-2" 
+        id="description" 
+        name="description"  
+        [(ngModel)]="product.description"
+        #description="ngModel" 
+        required></textarea>
+    </div>
+    <div *ngIf="description.invalid && (description.dirty || description.touched)" class="alert alert-danger">
+        <div>
+            <p>El campo Descripcion es requerido!</p>
+        </div>
     </div>
 
     <div class="form-group">
         <label for="price">Price</label>
-        <input type="number" class="form-control my-2" id="price" name="price"  [(ngModel)]="product.price"  required>
+        <input type="number" 
+        class="form-control my-2" 
+        id="price" 
+        name="price"  
+        [(ngModel)]="product.price"
+        #price="ngModel"  required min="0">
     </div>
-    
-    <button class="btn btn-primary">{{product.id >0 ? 'Update' : 'Crear'}}</button>
+    <div *ngIf="price.invalid && (price.dirty || price.touched)" class="alert alert-danger">
+        @if (price.errors!['required']) {
+            <div>
+                <p>El campo Precio es requerido!</p>
+            </div>
+        }
+
+        @if (price.errors!['min']) {
+            <div>
+                <p>El campo Precio debe ser mayor a 0!</p>
+            </div>
+        }
+    </div>
+
+    <div>
+        <button 
+        [disabled]="productForm.invalid"
+        type="submit" 
+        class="btn btn-primary my-2">
+        {{product.id >0 ? 'Update' : 'Crear'}}
+        </button>
+        
+        <button 
+        type="button" 
+        class="btn btn-success my-2 mx-2" (click)="onReset() ">
+        Reset
+        </button>
+    </div>
 </form>
