@@ -17,6 +17,7 @@ import com.ryuu_nomi.curso.springboot.app.springboot_crud_jpa.services.IProductS
 
 import jakarta.validation.Valid;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,12 +28,14 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequestMapping("/api/products")
+@CrossOrigin(origins = "http://localhost:4200") // Cambia el puerto según tu configuración de frontend
 public class ProductController {
 
     @Autowired
     private IProductService service;
 
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    // @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    
     @GetMapping
     public List<Product> list() {
         return service.findAll();
