@@ -19,7 +19,7 @@
 
 <!-- FORMA NUEVA CON "Sintaxis de flujo de control" -->
 
-@if (enabled) {
+<!-- @if (enabled) {
   <h2>{{title}}</h2>
   <ul>
     @for (course of courses; track $index) {
@@ -33,12 +33,9 @@
 
 <button type="button" (click)="setEnabled()">
   {{enabled ? 'Ocultar' : 'Mostrar'}}
-</button>
+</button> -->
 
   <!-- Tabla de productos -->
   <app-product></app-product>
-
-  <!-- Formulario de productos -->
-  <product-form></product-form>
 
 <router-outlet />

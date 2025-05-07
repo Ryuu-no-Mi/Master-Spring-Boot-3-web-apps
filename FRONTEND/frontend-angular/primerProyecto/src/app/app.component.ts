@@ -6,7 +6,7 @@ import { FormComponent } from "./products/components/form/form.component";
 
 @Component({
   selector: 'app-root2',
-  imports: [CommonModule, RouterOutlet, ProductComponent, FormComponent],
+  imports: [CommonModule, RouterOutlet, ProductComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

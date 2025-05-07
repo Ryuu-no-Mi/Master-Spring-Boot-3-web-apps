@@ -1,18 +1,18 @@
-<form action="POST">
+<form (ngSubmit)="onSubmit()">
     <div class="form-group">
         <label for="name">Name</label>
-        <input type="text" id="name" name="name" [(ngModel)]="product.name" required>
-    </div>
-    
-    <div class="form-group">
-        <label for="price">Price</label>
-        <input type="number" id="price" name="price"  [(ngModel)]="product.price"  required>
+        <input type="text" class="form-control my-2" id="name" name="name" [(ngModel)]="product.name" required>
     </div>
     
     <div class="form-group">
         <label for="description">Description</label>
-        <textarea id="description" name="description"  [(ngModel)]="product.description" ></textarea>
+        <textarea class="form-control my-2" id="description" name="description"  [(ngModel)]="product.description" ></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="price">Price</label>
+        <input type="number" class="form-control my-2" id="price" name="price"  [(ngModel)]="product.price"  required>
     </div>
     
-    <button type="submit">Submit</button>
+    <button class="btn btn-primary">{{product.id >0 ? 'Update' : 'Crear'}}</button>
 </form>
