@@ -59,6 +59,9 @@ public class SpringSecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/users").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/users/register").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/products", "/api/products/**").permitAll() // <-- Para poder visualizar los productos sin autenticación
+                .requestMatchers(HttpMethod.POST, "/api/products", "/api/products/**").permitAll()
+                .requestMatchers(HttpMethod.DELETE, "/api/products", "/api/products/**").permitAll()
+                .requestMatchers(HttpMethod.PUT, "/api/products", "/api/products/**").permitAll()
                 // .requestMatchers(HttpMethod.POST, "/api/users").hasRole("ADMIN")
                 // .requestMatchers(HttpMethod.GET, "/api/products", "/api/products/{id}").hasAnyRole("ADMIN","USER")
                 // .requestMatchers(HttpMethod.POST, "/api/products").hasRole("ADMIN")

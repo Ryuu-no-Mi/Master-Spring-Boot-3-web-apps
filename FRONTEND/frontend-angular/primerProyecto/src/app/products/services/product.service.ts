@@ -29,10 +29,19 @@ export class ProductService {
     // );
     return this.hhtp.get<Product[]>(this.url);
 
-    
     // tienes que configurar el httpclient en el main.ts
     // import { HttpClientModule } from '@angular/common/http';
-
   }
+
+  create(product: Product): Observable<Product> {
+    // return this.hhtp.post<Product>(this.url, product).pipe(
+    //   map((response: any) => response._embedded.products as Product[]), // Ajusta esto según la estructura de tu respuesta API
+    // );
+    return this.hhtp.post<Product>(this.url, product);
+  }
+
+  update(product: Product): Observable<Product> {
+    return this.hhtp.put<Product>(`${this.url}/${product.id}`, product);
+  }
+
 }
- 

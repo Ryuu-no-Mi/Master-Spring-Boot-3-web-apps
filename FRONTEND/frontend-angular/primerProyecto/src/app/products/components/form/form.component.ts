@@ -32,7 +32,7 @@ export class FormComponent {
     // For example:
     // this.productService.saveProduct(this.product).subscribe(response => {
     //   console.log('Product saved:', response);
-    throw new Error('Method not implemented.');
+    // throw new Error('Method not implemented.');
   }
 
   onReset():void {

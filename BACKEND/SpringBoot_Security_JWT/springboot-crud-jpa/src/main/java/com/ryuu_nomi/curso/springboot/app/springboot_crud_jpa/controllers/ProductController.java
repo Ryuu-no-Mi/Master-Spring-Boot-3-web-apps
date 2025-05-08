@@ -28,20 +28,20 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequestMapping("/api/products")
-@CrossOrigin(origins = "http://localhost:4200") // Cambia el puerto según tu configuración de frontend
+@CrossOrigin(origins = { "http://localhost:5173","http://localhost:4200" }) // Cambia el puerto según tu configuración de frontend
 public class ProductController {
 
     @Autowired
     private IProductService service;
 
     // @PreAuthorize("hasAnyRole('ADMIN','USER')")
-    
+
     @GetMapping
     public List<Product> list() {
         return service.findAll();
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    // @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/{id}")
     public ResponseEntity<?> view(@PathVariable Long id) {
         //return service.findById(id).get();
@@ -54,7 +54,7 @@ public class ProductController {
 
     // Agregar
     // el @ valid debe ir en el request body <Product>
-    @PreAuthorize("hasRole('ADMIN')")
+    // @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody Product product, BindingResult result) {
         // Product productNew = service.save(product);
@@ -68,7 +68,7 @@ public class ProductController {
     // modificacion
     // el @ valid debe ir en el request body <Product>
     //El BindingResult debe esta al lado del objeto a validar
-    @PreAuthorize("hasRole('ADMIN')")
+    // @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@Valid @RequestBody Product product, BindingResult result, @PathVariable Long id) {
         // Product productDB = service.findById(id);
@@ -88,7 +88,7 @@ public class ProductController {
         return ResponseEntity.notFound().build();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    // @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         Optional<Product> productOptional = service.delete(id);

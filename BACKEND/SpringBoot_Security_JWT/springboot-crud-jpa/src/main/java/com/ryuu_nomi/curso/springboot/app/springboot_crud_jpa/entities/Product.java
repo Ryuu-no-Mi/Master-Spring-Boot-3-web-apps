@@ -1,5 +1,6 @@
 package com.ryuu_nomi.curso.springboot.app.springboot_crud_jpa.entities;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -11,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -34,10 +36,11 @@ public class Product {
     @Size(min = 3, max = 20, message = "{Size.product.name}")
     private String name;
 
-    //Pongo minimo 1 por ser entero, lo suyo seria un double, y procurar qu eningun producto sea menor que 0.1d
-    @Min(value = 1, message = "{Min.product.price}")
+    //Pongo minimo 1 por ser entero, lo suyo seria un BigDecimal, y procurar qu eningun producto sea menor que 0.1d
+    // @Min(value = 1, message = "{Min.product.price}")
+    @DecimalMin(value = "0.1", message = "{Min.product.price}")
     @NotNull(message = "{NotNull.product.price}")
-    private Integer price;
+    private BigDecimal price;
 
     @IsRequired
     private String description;
@@ -49,7 +52,7 @@ public class Product {
     public Product() {
     }
 
-    public Product(Long id, String name, Integer price, String description, LocalDateTime date) {
+    public Product(Long id, String name, BigDecimal price, String description, LocalDateTime date) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -73,11 +76,11 @@ public class Product {
         this.name = name;
     }
 
-    public Integer getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

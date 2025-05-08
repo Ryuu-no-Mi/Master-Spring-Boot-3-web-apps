@@ -40,7 +40,7 @@
         id="price" 
         name="price"  
         [(ngModel)]="product.price"
-        #price="ngModel"  required min="0">
+        #price="ngModel"  required min="0.10" step="1">
     </div>
     <div *ngIf="price.invalid && (price.dirty || price.touched)" class="alert alert-danger">
         @if (price.errors!['required']) {
@@ -51,7 +51,7 @@
 
         @if (price.errors!['min']) {
             <div>
-                <p>El campo Precio debe ser mayor a 0!</p>
+                <p>El campo Precio debe ser mayor a 0.10!</p>
             </div>
         }
     </div>
